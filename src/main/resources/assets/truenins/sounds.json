@@ -1,0 +1,67 @@
+{
+  "rain_love": {
+    "sounds": [
+      {
+        "name": "truenins:rain_love",
+        "stream": true
+      }
+    ]
+  },
+  "made_in_heaven": {
+    "sounds": [
+      {
+        "name": "truenins:made_in_heaven",
+        "stream": true
+      }
+    ]
+  },
+  "black_flash": {
+    "sounds": [
+      {
+        "name": "truenins:black_flash"
+      }
+    ]
+  },
+  "ao_cast": {
+    "sounds": [
+      {
+        "name": "truenins:ao_cast"
+      }
+    ]
+  },
+  "ao_hum": {
+    "sounds": [
+      {
+        "name": "truenins:ao_hum"
+      }
+    ]
+  },
+  "he_cast": {
+    "sounds": [
+      {
+        "name": "truenins:he_cast"
+      }
+    ]
+  },
+  "he_fly": {
+    "sounds": [
+      {
+        "name": "truenins:he_fly"
+      }
+    ]
+  },
+  "he_explode": {
+    "sounds": [
+      {
+        "name": "truenins:he_explode"
+      }
+    ]
+  },
+  "block_break": {
+    "sounds": [
+      {
+        "name": "truenins:block_break"
+      }
+    ]
+  }
+}
