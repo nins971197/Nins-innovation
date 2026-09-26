@@ -2,6 +2,7 @@ package com.truenins.register;
 
 import com.truenins.TrueNinsMod;
 import com.truenins.entity.BlueOrbEntity;
+import com.truenins.entity.OrbShardEntity;
 import com.truenins.entity.RedOrbEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -30,6 +31,15 @@ public final class TNEntities {
             .clientTrackingRange(16)
             .updateInterval(1)
             .build(new ResourceLocation(TrueNinsMod.MODID, "red_orb").toString()));
+
+    public static final RegistryObject<EntityType<OrbShardEntity>> ORB_SHARD =
+        ENTITIES.register("orb_shard", () -> EntityType.Builder
+            .<OrbShardEntity>of(OrbShardEntity::new, MobCategory.MISC)
+            .sized(0.6F, 0.6F)
+            .clientTrackingRange(12)
+            .updateInterval(1)
+            .noSave()
+            .build(new ResourceLocation(TrueNinsMod.MODID, "orb_shard").toString()));
 
     private TNEntities() {}
 }

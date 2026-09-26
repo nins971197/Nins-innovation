@@ -83,8 +83,9 @@ public final class TrueNinsConfig {
     public static final ForgeConfigSpec.IntValue AO_MANA_COST;
     public static final ForgeConfigSpec.IntValue AO_COOLDOWN_SECONDS;
     public static final ForgeConfigSpec.DoubleValue AO_DURATION_SECONDS;
-    public static final ForgeConfigSpec.DoubleValue AO_ORBIT_RADIUS;
-    public static final ForgeConfigSpec.DoubleValue AO_ORBIT_SPEED;
+    public static final ForgeConfigSpec.DoubleValue AO_CHARGE_RADIUS;
+    public static final ForgeConfigSpec.DoubleValue AO_FLIGHT_SPEED;
+    public static final ForgeConfigSpec.DoubleValue AO_MAX_DISTANCE;
     public static final ForgeConfigSpec.DoubleValue AO_PULL_STRENGTH;
     public static final ForgeConfigSpec.DoubleValue AO_PULL_RADIUS;
     public static final ForgeConfigSpec.DoubleValue AO_DAMAGE_AMOUNT;
@@ -339,14 +340,18 @@ public final class TrueNinsConfig {
             .comment(" How long the sphere exists before it bursts (seconds)",
                 "Default: 15.0")
             .defineInRange("durationSeconds", 15.0D, 1.0D, 300.0D);
-        AO_ORBIT_RADIUS = b
-            .comment(" Radius of the circle the sphere flies around the caster (blocks)",
-                "Default: 5.0")
-            .defineInRange("orbitRadius", 5.0D, 1.0D, 24.0D);
-        AO_ORBIT_SPEED = b
-            .comment(" Orbit angular speed (radians per tick)",
-                "Default: 0.13 (a full lap in about 4 seconds)")
-            .defineInRange("orbitSpeed", 0.13D, 0.005D, 1.0D);
+        AO_CHARGE_RADIUS = b
+            .comment(" Radius of the circle the sphere flies while the spell is charging (blocks)",
+                "It completes exactly one lap over the cast time. Default: 2.2")
+            .defineInRange("chargeRadius", 2.2D, 0.5D, 12.0D);
+        AO_FLIGHT_SPEED = b
+            .comment(" How fast the sphere flies away once it is released (blocks per tick)",
+                "Default: 0.45")
+            .defineInRange("flightSpeed", 0.45D, 0.05D, 6.0D);
+        AO_MAX_DISTANCE = b
+            .comment(" How far it flies before it stops moving and keeps feeding in place (blocks)",
+                "Default: 32.0")
+            .defineInRange("maxDistance", 32.0D, 4.0D, 128.0D);
         AO_PULL_RADIUS = b
             .comment(" Extra radius beyond the orbit that entities are dragged in from (blocks)",
                 "Default: 6.0")
@@ -370,22 +375,21 @@ public final class TrueNinsConfig {
             .define("consumeBlocks", true);
         AO_CONSUME_RADIUS = b
             .comment(" Radius around the sphere that it feeds on (blocks)",
-                "Default: 2")
-            .defineInRange("consumeRadius", 2, 1, 8);
+                "Default: 6")
+            .defineInRange("consumeRadius", 6, 1, 12);
         AO_CONSUME_INTERVAL_TICKS = b
             .comment(" Ticks between two sweeps",
                 "1 means it chews every tick. Default: 1")
             .defineInRange("consumeIntervalTicks", 1, 1, 200);
         AO_CONSUME_PER_INTERVAL = b
             .comment(" Safety cap on how many blocks are removed per sweep, to stop huge radii",
-                "from stalling the server. A radius 2 sphere holds 33 blocks, so the default",
-                "of 48 removes all of them. Default: 48")
-            .defineInRange("consumePerInterval", 48, 1, 512);
+                "from stalling the server. Default: 192")
+            .defineInRange("consumePerInterval", 192, 1, 2048);
         AO_MAX_SHARDS = b
             .comment(" How many block shards can be carried at once. They are held around the",
                 "sphere while it lasts and dropped where it ends, piling up there.",
-                "Default: 320")
-            .defineInRange("maxShards", 320, 8, 2048);
+                "Default: 600")
+            .defineInRange("maxShards", 600, 8, 4096);
         b.pop();
 
         b.push("he");
@@ -638,12 +642,16 @@ public final class TrueNinsConfig {
         return secondsToTicks(AO_DURATION_SECONDS, 15.0D, 20);
     }
 
-    public static double aoOrbitRadius() {
-        return real(AO_ORBIT_RADIUS, 5.0D);
+    public static double aoChargeRadius() {
+        return real(AO_CHARGE_RADIUS, 2.2D);
     }
 
-    public static double aoOrbitSpeed() {
-        return real(AO_ORBIT_SPEED, 0.13D);
+    public static double aoFlightSpeed() {
+        return real(AO_FLIGHT_SPEED, 0.45D);
+    }
+
+    public static double aoMaxDistance() {
+        return real(AO_MAX_DISTANCE, 32.0D);
     }
 
     public static double aoPullStrength() {
@@ -667,7 +675,7 @@ public final class TrueNinsConfig {
     }
 
     public static int aoConsumeRadius() {
-        return integer(AO_CONSUME_RADIUS, 2);
+        return integer(AO_CONSUME_RADIUS, 6);
     }
 
     public static int aoConsumeIntervalTicks() {
@@ -679,7 +687,7 @@ public final class TrueNinsConfig {
     }
 
     public static int aoMaxShards() {
-        return integer(AO_MAX_SHARDS, 320);
+        return integer(AO_MAX_SHARDS, 600);
     }
 
     public static int heManaCost() {

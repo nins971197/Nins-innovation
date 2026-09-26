@@ -16,5 +16,6 @@ public final class TNEntityRenderers {
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(TNEntities.BLUE_ORB.get(), TNOrbRenderer::new);
         event.registerEntityRenderer(TNEntities.RED_ORB.get(), TNOrbRenderer::new);
+        event.registerEntityRenderer(TNEntities.ORB_SHARD.get(), TNShardRenderer::new);
     }
 }

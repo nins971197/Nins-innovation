@@ -102,13 +102,36 @@ public class AoSpell extends AbstractSpell {
     }
 
     @Override
+    public void onServerPreCast(Level level, int spellLevel, LivingEntity entity, MagicData magicData) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        BlueOrbEntity orb = new BlueOrbEntity(serverLevel, entity, getCastTime(spellLevel));
+        serverLevel.addFreshEntity(orb);
+        BlueOrbEntity.CHARGING.put(entity.getUUID(), orb);
+    }
+
+    @Override
     public void onCast(Level level, int spellLevel, LivingEntity entity, CastSource castSource, MagicData magicData) {
         if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) return;
         serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
             com.truenins.register.TNSounds.AO_CAST.get(),
-            net.minecraft.sounds.SoundSource.PLAYERS, 1.5F, 1.0F);
-        BlueOrbEntity orb = new BlueOrbEntity(serverLevel, entity);
-        serverLevel.addFreshEntity(orb);
+            net.minecraft.sounds.SoundSource.BLOCKS, 1.5F, 1.0F);
+
+        BlueOrbEntity orb = BlueOrbEntity.CHARGING.remove(entity.getUUID());
+        if (orb == null || orb.isRemoved()) {
+            orb = new BlueOrbEntity(serverLevel, entity, 1);
+            serverLevel.addFreshEntity(orb);
+        }
+        orb.launch();
+    }
+
+    @Override
+    public void onServerCastComplete(Level level, int spellLevel, LivingEntity entity,
+                                     MagicData magicData, boolean cancelled) {
+        if (cancelled) {
+            BlueOrbEntity orb = BlueOrbEntity.CHARGING.remove(entity.getUUID());
+            if (orb != null) orb.discard();
+        }
+        super.onServerCastComplete(level, spellLevel, entity, magicData, cancelled);
     }
 
     @Override
@@ -116,7 +139,7 @@ public class AoSpell extends AbstractSpell {
         return List.of(
             Component.translatable("ui.truenins.ao.mana", TrueNinsConfig.aoManaCost()),
             Component.translatable("ui.truenins.ao.duration", TrueNinsConfig.aoDurationTicks() / 20),
-            Component.translatable("ui.truenins.ao.radius", (int) TrueNinsConfig.aoOrbitRadius()),
+            Component.translatable("ui.truenins.ao.radius", (int) TrueNinsConfig.aoMaxDistance()),
             Component.translatable("ui.truenins.ao.damage", (int) TrueNinsConfig.aoDamageAmount()));
     }
 }

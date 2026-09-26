@@ -103,8 +103,12 @@ Requirements:
 
 The jar lands in `build/libs/truenins-<version>.jar`.
 
-> `gradle.properties` pins `org.gradle.java.home` to a specific local JDK path.
-> Delete or edit that line if your JDK lives somewhere else.
+If Gradle does not pick up your JDK 17 automatically, either set the `JAVA_HOME`
+environment variable or add a line to `gradle.properties`:
+
+```properties
+org.gradle.java.home=/absolute/path/to/your/jdk17
+```
 
 ## Notes
 

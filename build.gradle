@@ -53,20 +53,21 @@ repositories {
     maven { url = 'https://maven.aliyun.com/repository/public' }
     maven { url = 'https://maven.minecraftforge.net/' }
     maven { url = 'https://repo.spongepowered.org/maven/' }
-    maven {
-        url = uri("https://cursemaven.com")
-    }
-
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation(fg.deobf("curse.maven:Curios-API-309927:6418456"))
-    implementation(fg.deobf("curse.maven:GeckoLib-388172:8285794"))
-    implementation(fg.deobf("curse.maven:playerAnimator-658587:4587214"))
-    implementation(fg.deobf("curse.maven:Iron's-Spells-'n-Spellbooks-855414:8680180"))
-    implementation(fg.deobf("curse.maven:Iron's-Lib-1492763:8364892"))
+
+    def thirdParty = file('libs').listFiles()?.findAll { it.name.endsWith('.jar') } ?: []
+    if (thirdParty.isEmpty()) {
+        throw new GradleException(
+            "libs/ is empty.\n" +
+            "This addon compiles against Iron's Spells 'n Spellbooks and irons_lib, which are\n" +
+            "other people's work and are deliberately NOT shipped with this repository.\n" +
+            "Download them and drop the jars into libs/ - see libs/README.md for details.")
+    }
+    compileOnly fg.deobf(files(thirdParty))
 }
 
 jar {

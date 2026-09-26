@@ -80,7 +80,7 @@ public class TNOrbRenderer extends EntityRenderer<TNOrbEntity> {
             }
         } else {
             pose.pushPose();
-            pose.mulPose(Axis.YP.rotationDegrees(time * 34.0F));
+            pose.mulPose(Axis.YP.rotationDegrees(time * 82.0F));
             ball(pose, vc, eye, SHELL_RADIUS, 16, 0.05F,
                 0.02F, 0.06F, 0.16F, 0.42F, 0.74F, 1.00F, 0.18F, 0.58F);
             ball(pose, vc, eye, CORE_RADIUS, 12, 0.05F,
@@ -91,7 +91,7 @@ public class TNOrbRenderer extends EntityRenderer<TNOrbEntity> {
                 pose.pushPose();
                 pose.mulPose(Axis.XP.rotationDegrees(16.0F + i * 44.0F));
                 pose.mulPose(Axis.ZP.rotationDegrees(12.0F * i));
-                pose.mulPose(Axis.YP.rotationDegrees(time * (52.0F + i * 18.0F) * (i % 2 == 0 ? 1.0F : -1.0F)));
+                pose.mulPose(Axis.YP.rotationDegrees(time * (130.0F + i * 44.0F) * (i % 2 == 0 ? 1.0F : -1.0F)));
                 ring(pose, vc, 0.98F + i * 0.15F, 0.07F, 48,
                     0.50F, 0.82F, 1.00F, 0.40F - i * 0.10F);
                 pose.popPose();
