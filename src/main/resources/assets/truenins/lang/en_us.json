@@ -112,7 +112,7 @@
   "spell.truenins.ao.guide": "The right hand rises smoothly in front of the face and a pale blue sphere forms on the palm, then is flung out. The sphere circles the caster, dragging nearby creatures onto itself and grinding them down.",
   "ui.truenins.ao.mana": "Mana Cost: %s",
   "ui.truenins.ao.duration": "Duration: %s s",
-  "ui.truenins.ao.radius": "Orbit radius: %s blocks",
+  "ui.truenins.ao.radius": "Flight distance: %s blocks",
   "ui.truenins.ao.damage": "Grind damage: %s"
 
   ,"spell.truenins.he": "He",

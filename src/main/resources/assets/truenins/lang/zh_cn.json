@@ -112,7 +112,7 @@
   "spell.truenins.ao.guide": "右手连贯地举到面前，掌心浮现一颗淡蓝色球体，随后甩出。球体环绕在周身，把附近的生物不断拽向自己，持续碾压。",
   "ui.truenins.ao.mana": "法力消耗：%s",
   "ui.truenins.ao.duration": "持续：%s 秒",
-  "ui.truenins.ao.radius": "环绕半径：%s 格",
+  "ui.truenins.ao.radius": "飞行距离：%s 格",
   "ui.truenins.ao.damage": "碾压伤害：%s"
 
   ,"spell.truenins.he": "赫",

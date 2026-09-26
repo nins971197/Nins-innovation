@@ -1,0 +1,22 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.truenins.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "truenins.refmap.json",
+    "mixins": [
+        "MixinAntiheal",
+        "MixinBanPlayerCommands",
+        "MixinDamageSource",
+        "MixinDeityProtection",
+        "MixinEntityTagSync",
+        "MixinInventory",
+        "MixinKickCommand",
+        "MixinLivingEntity"
+    ],
+    "client": [],
+    "server": [],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

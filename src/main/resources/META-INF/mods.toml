@@ -1,0 +1,92 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+
+[[mods]]
+modId = "truenins"
+version = "${file.jarVersion}"
+displayName = "Nins innovation"
+authors = "TrueNinsTeam"
+description = '''
+Nins innovation  |  Nins创想
+
+A dual-channel perk system. Every effect exists in two independent regions:
+an item NBT tag (applied with commands) and an enchantment (applied on an
+anvil or by other mods). Same effect, two separate channels, separate state.
+
+===== Tags (20) =====
+true_me     True Name    melee damage is judged as true damage
+deity       Divinity     nothing can shake you
+fly         Skyward      ride the void wind
+immunity    Purity       immune to negative effects
+thorns      Reflect      attackers take damage
+adaptation  Adaptation   you gradually adapt to enemy attacks
+mitigation  Mitigation   you become the next calamity
+revive      Revival      the dead shall return
+muryokusho  muryokusho   stuns the hit target (20 ticks, per-target cooldown)
+antiheal    Antiheal     enemies cannot restore health
+justice     Sanction     cuts the enemy max health
+scaling     Scaling      higher enemy health, higher damage
+malice      Malice       the more you hit, the harder you hit
+resolve     Last Stand   invincible near death, then half max health as damage
+siphon      Siphon       heal yourself by the damage you deal
+rage        Blood Rage   lower health, higher damage
+unclear     Unclear      keeps this item from being cleared by /clear
+colorfast   Colorfast    immune to /kick and /ban
+infinity    Infinity     melee nullified, projectiles slowed, fall braking
+blackflash  Black Flash  a chance to deal ten times the damage and launch the target
+
+===== Enchantments (15) =====
+true_name  stasis  antiheal  sanction  scaling  malice  blood_rage
+divinity   skyward  purity   adaptation  mitigation  revival
+last_stand  infinity
+
+===== Commands =====
+/truenins tag apply <tag>
+/truenins tag remove
+/truenins check
+
+===== Item =====
+truenins:tag_guide - a guide book listing every tag and enchantment in game.
+
+===== Iron's Spells 'n Spellbooks (optional) =====
+Installing Iron's Spells 'n Spellbooks 3.15.0 or newer adds the truenins:curse
+school and five spells to the game:
+
+truenins:infinity        无下限      30 s wall, then a health drain
+truenins:made_in_heaven  天堂制造    accelerates the clock and everything nearby
+truenins:curse_zone      咒术zone    three guaranteed Black Flashes
+truenins:ao              苍          a pale blue sphere that orbits you and drags mobs in
+truenins:he              赫          a deep red sphere that tears a tunnel through the world
+
+Every number the spells use (mana, cooldown, damage, speed, radius...) lives in
+this mod's own config under [spells], not in Iron's spell config.
+
+Without Iron's Spells the tags, enchantments, guide book and commands all work
+unchanged; only the school, the spells and the curse spell scroll are absent.
+'''
+logoFile = "truenins.png"
+
+[[dependencies.truenins]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.truenins]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.truenins]]
+modId = "irons_spellbooks"
+mandatory = false
+versionRange = "[1.20.1-3.15.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "truenins.mixins.json"
