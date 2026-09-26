@@ -1,0 +1,30 @@
+# Gradle
+.gradle/
+build/
+
+# Minecraft Forge development runtime
+run/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Third-party dependencies kept locally
+libs/*.jar
+
+# Generated archives and reports
+*.log
+crash-reports/
+hs_err_pid*.log
+
+# Local environment files
+.env
+.env.*
+!.env.example

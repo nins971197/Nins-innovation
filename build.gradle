@@ -53,13 +53,20 @@ repositories {
     maven { url = 'https://maven.aliyun.com/repository/public' }
     maven { url = 'https://maven.minecraftforge.net/' }
     maven { url = 'https://repo.spongepowered.org/maven/' }
+    maven {
+        url = uri("https://cursemaven.com")
+    }
+
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    compileOnly fg.deobf(files('libs/irons_spellbooks-1.20.1-3.16.3.jar'))
-    compileOnly fg.deobf(files('libs/irons_lib-1.20.1-2.1.0.jar'))
+    implementation(fg.deobf("curse.maven:Curios-API-309927:6418456"))
+    implementation(fg.deobf("curse.maven:GeckoLib-388172:8285794"))
+    implementation(fg.deobf("curse.maven:playerAnimator-658587:4587214"))
+    implementation(fg.deobf("curse.maven:Iron's-Spells-'n-Spellbooks-855414:8680180"))
+    implementation(fg.deobf("curse.maven:Iron's-Lib-1492763:8364892"))
 }
 
 jar {
