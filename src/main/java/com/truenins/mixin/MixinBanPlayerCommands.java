@@ -1,7 +1,7 @@
 package com.truenins.mixin;
 
 import com.mojang.authlib.GameProfile;
-import com.truenins.TagScan;
+import com.truenins.gameplay.tag.TagScan;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.commands.BanPlayerCommands;
 import net.minecraft.server.level.ServerPlayer;

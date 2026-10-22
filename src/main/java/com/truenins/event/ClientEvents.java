@@ -1,9 +1,9 @@
 package com.truenins.event;
 
 import com.truenins.TrueNinsConfig;
-import com.truenins.TrueNinsEnchantments;
+import com.truenins.gameplay.enchantment.TrueNinsEnchantments;
 import com.truenins.TrueNinsMod;
-import com.truenins.TrueNinsTags;
+import com.truenins.gameplay.tag.TrueNinsTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

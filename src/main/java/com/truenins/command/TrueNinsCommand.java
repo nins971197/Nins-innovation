@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.truenins.TrueNinsTags;
+import com.truenins.gameplay.tag.TrueNinsTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -35,7 +35,7 @@ public final class TrueNinsCommand {
                     .then(Commands.literal("adaptation").executes(c -> applyArmorTag(c, "adaptation")))
                     .then(Commands.literal("mitigation").executes(c -> applyArmorTag(c, "mitigation")))
                     .then(Commands.literal("revive").executes(c -> applyArmorTag(c, "revive")))
-                    .then(Commands.literal("muryokusho").executes(c -> applyWeaponTag(c, "muryokusho")))
+                    .then(Commands.literal("stun").executes(c -> applyWeaponTag(c, "stun")))
                     .then(Commands.literal("antiheal").executes(c -> applyWeaponTag(c, "antiheal")))
                     .then(Commands.literal("justice").executes(c -> applyWeaponTag(c, "justice")))
                     .then(Commands.literal("scaling").executes(c -> applyWeaponTag(c, "scaling")))
@@ -51,8 +51,8 @@ public final class TrueNinsCommand {
                             .executes(c -> applyChance(c, "blackflash",
                                 IntegerArgumentType.getInteger(c, "percent")))))
                     .then(Commands.literal("infinity").executes(c -> applyArmorTag(c, "infinity"))))
-                .then(Commands.literal("remove").executes(TrueNinsCommand::remove)))
-            .then(Commands.literal("check").executes(TrueNinsCommand::check))
+                .then(Commands.literal("remove").executes(TrueNinsCommand::remove))
+                .then(Commands.literal("check").executes(TrueNinsCommand::check)))
         );
     }
 

@@ -1,0 +1,125 @@
+{
+  "vertex": "truenins:domain_sky",
+  "fragment": "truenins:executioner_sword",
+  "attributes": [
+    "Position",
+    "UV0",
+    "Color"
+  ],
+  "samplers": [
+    {
+      "name": "SceneDepth"
+    }
+  ],
+  "blend": {
+    "func": "add",
+    "srcrgb": "1",
+    "dstrgb": "1-srcalpha"
+  },
+  "uniforms": [
+    {
+      "name": "InverseViewProjection",
+      "count": 16,
+      "values": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "type": "matrix4x4"
+    },
+    {
+      "name": "CenterRelative",
+      "count": 3,
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "type": "float"
+    },
+    {
+      "name": "Visibility",
+      "count": 1,
+      "values": [
+        1
+      ],
+      "type": "float"
+    },
+    {
+      "name": "Age",
+      "count": 1,
+      "values": [
+        1
+      ],
+      "type": "float"
+    },
+    {
+      "name": "Axis",
+      "type": "float",
+      "count": 3,
+      "values": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "Right",
+      "type": "float",
+      "count": 3,
+      "values": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "Normal",
+      "type": "float",
+      "count": 3,
+      "values": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "ScreenSize",
+      "type": "float",
+      "count": 2,
+      "values": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "name": "Time",
+      "type": "float",
+      "count": 1,
+      "values": [
+        0
+      ]
+    },
+    {
+      "name": "Formation",
+      "type": "float",
+      "count": 1,
+      "values": [
+        0
+      ]
+    }
+  ]
+}

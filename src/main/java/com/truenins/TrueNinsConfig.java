@@ -1,5 +1,7 @@
 package com.truenins;
 
+import com.truenins.gameplay.enchantment.TrueNinsEnchantments;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.HashMap;
@@ -26,8 +28,8 @@ public final class TrueNinsConfig {
 
     public static final ForgeConfigSpec.IntValue REVIVE_COOLDOWN_SECONDS;
 
-    public static final ForgeConfigSpec.DoubleValue MURYOKUSHO_DURATION_SECONDS;
-    public static final ForgeConfigSpec.IntValue MURYOKUSHO_COOLDOWN_SECONDS;
+    public static final ForgeConfigSpec.DoubleValue STUN_DURATION_SECONDS;
+    public static final ForgeConfigSpec.IntValue STUN_COOLDOWN_SECONDS;
 
     public static ForgeConfigSpec.DoubleValue[] ANTIHEAL_LEVELS;
 
@@ -93,8 +95,15 @@ public final class TrueNinsConfig {
     public static final ForgeConfigSpec.BooleanValue AO_CONSUME_BLOCKS;
     public static final ForgeConfigSpec.IntValue AO_CONSUME_RADIUS;
     public static final ForgeConfigSpec.IntValue AO_CONSUME_INTERVAL_TICKS;
-    public static final ForgeConfigSpec.IntValue AO_CONSUME_PER_INTERVAL;
     public static final ForgeConfigSpec.IntValue AO_MAX_SHARDS;
+    public static final ForgeConfigSpec.IntValue VOID_MANA_COST;
+    public static final ForgeConfigSpec.IntValue VOID_COOLDOWN_SECONDS;
+    public static final ForgeConfigSpec.IntValue VOID_DURATION_SECONDS;
+    public static final ForgeConfigSpec.DoubleValue VOID_RADIUS;
+    public static final ForgeConfigSpec.DoubleValue VOID_DAMAGE;
+    public static final ForgeConfigSpec.BooleanValue VOID_DEBUG_FRAMES;
+    public static final ForgeConfigSpec.BooleanValue AO_BREAK_CONTAINERS;
+    public static final ForgeConfigSpec.IntValue AO_CHARGE_MANA_PER_SECOND;
 
     public static final ForgeConfigSpec.IntValue HE_MANA_COST;
     public static final ForgeConfigSpec.IntValue HE_COOLDOWN_SECONDS;
@@ -105,9 +114,38 @@ public final class TrueNinsConfig {
     public static final ForgeConfigSpec.DoubleValue HE_HIT_RADIUS;
     public static final ForgeConfigSpec.IntValue HE_BREAK_RADIUS;
     public static final ForgeConfigSpec.BooleanValue HE_BREAK_BLOCKS;
+    public static final ForgeConfigSpec.BooleanValue HE_BREAK_CONTAINERS;
     public static final ForgeConfigSpec.DoubleValue HE_TEAR_LENGTH;
     public static final ForgeConfigSpec.DoubleValue HE_TEAR_RADIUS;
     public static final ForgeConfigSpec.DoubleValue HE_BLAST_RADIUS;
+
+    public static final ForgeConfigSpec.IntValue CONFLAGRATION_MANA, CONFLAGRATION_COOLDOWN;
+    public static final ForgeConfigSpec.DoubleValue CONFLAGRATION_RADIUS, CONFLAGRATION_DAMAGE, CONFLAGRATION_GIANT_DAMAGE, CONFLAGRATION_GIANT_RADIUS;
+    public static final ForgeConfigSpec.BooleanValue CONFLAGRATION_BREAK_BLOCKS;
+    public static final ForgeConfigSpec.DoubleValue CONFLAGRATION_METEOR_BLAST_SCALE,
+        CONFLAGRATION_GIANT_CRATER_RADIUS, CONFLAGRATION_GIANT_CRATER_DEPTH;
+    public static final ForgeConfigSpec.IntValue PURPLE_MANA_COST;
+    public static final ForgeConfigSpec.IntValue PURPLE_COOLDOWN_SECONDS;
+    public static final ForgeConfigSpec.DoubleValue PURPLE_SPAWN_DISTANCE;
+    public static final ForgeConfigSpec.IntValue PURPLE_FUSION_TICKS;
+    public static final ForgeConfigSpec.DoubleValue PURPLE_DAMAGE_AMOUNT;
+    public static final ForgeConfigSpec.DoubleValue PURPLE_BLAST_RADIUS;
+    public static final ForgeConfigSpec.DoubleValue PURPLE_BLAST_RADIUS_SCALE;
+    public static final ForgeConfigSpec.BooleanValue PURPLE_BREAK_BLOCKS;
+
+    public static final ForgeConfigSpec.IntValue JUDGMENT_MANA_COST;
+    public static final ForgeConfigSpec.IntValue JUDGMENT_COOLDOWN_SECONDS;
+    public static final ForgeConfigSpec.DoubleValue JUDGMENT_TARGET_RANGE;
+
+    public static final ForgeConfigSpec.IntValue SHINGAN_MANA_COST;
+    public static final ForgeConfigSpec.IntValue SHINGAN_COOLDOWN_SECONDS;
+    public static final ForgeConfigSpec.IntValue SHINGAN_DURATION_SECONDS;
+    public static final ForgeConfigSpec.DoubleValue SHINGAN_RADIUS;
+    public static final ForgeConfigSpec.IntValue SHINGAN_ATTACKS;
+    public static final ForgeConfigSpec.DoubleValue SHINGAN_ATTACK_INTERVAL_SCALE;
+    public static final ForgeConfigSpec.DoubleValue SHINGAN_ATTACK_PROJECTILE_SPEED;
+    public static final ForgeConfigSpec.IntValue SHINGAN_DECOR_COUNT;
+    public static final ForgeConfigSpec.DoubleValue SHINGAN_DECOR_DENSITY;
 
     static {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
@@ -158,16 +196,16 @@ public final class TrueNinsConfig {
             .defineInRange("cooldownSeconds", 30, 1, 3600);
         b.pop();
 
-        b.push("muryokusho");
-        b.comment(" muryokusho (无量空处) — weapon tag {muryokusho: 1b}.",
+        b.push("stun");
+        b.comment(" Stun (失神) — weapon tag {stun: 1b}.",
             "Hitting an entity freezes them: players cannot move/act,",
             "non-player entities lose AI. Cooldown is per TARGET.");
-        MURYOKUSHO_DURATION_SECONDS = b
+        STUN_DURATION_SECONDS = b
             .comment(" How long the target is frozen / AI-disabled (seconds)",
                 "Default: 1.0")
             .defineInRange("durationSeconds", 1.0D, 0.1D, 60.0D);
-        MURYOKUSHO_COOLDOWN_SECONDS = b
-            .comment(" Cooldown per TARGET between muryokusho applications (seconds)",
+        STUN_COOLDOWN_SECONDS = b
+            .comment(" Cooldown per TARGET between stun applications (seconds)",
                 "Default: 10")
             .defineInRange("cooldownSeconds", 10, 0, 3600);
         b.pop();
@@ -375,21 +413,89 @@ public final class TrueNinsConfig {
             .define("consumeBlocks", true);
         AO_CONSUME_RADIUS = b
             .comment(" Radius around the sphere that it feeds on (blocks)",
-                "Default: 6")
-            .defineInRange("consumeRadius", 6, 1, 12);
+                "Default: 7")
+            .defineInRange("consumeRadius", 7, 1, 12);
         AO_CONSUME_INTERVAL_TICKS = b
             .comment(" Ticks between two sweeps",
                 "1 means it chews every tick. Default: 1")
             .defineInRange("consumeIntervalTicks", 1, 1, 200);
-        AO_CONSUME_PER_INTERVAL = b
-            .comment(" Safety cap on how many blocks are removed per sweep, to stop huge radii",
-                "from stalling the server. Default: 192")
-            .defineInRange("consumePerInterval", 192, 1, 2048);
         AO_MAX_SHARDS = b
-            .comment(" How many block shards can be carried at once. They are held around the",
-                "sphere while it lasts and dropped where it ends, piling up there.",
-                "Default: 600")
-            .defineInRange("maxShards", 600, 8, 4096);
+            .comment(" How many block shards can be carried at once. The sphere keeps clearing",
+                "its path until this many are in the air, then stops eating rather than",
+                "deleting blocks it cannot carry. Default: 1000")
+            .defineInRange("maxShards", 1000, 8, 8192);
+        AO_BREAK_CONTAINERS = b
+            .comment(" Whether the sphere also destroys containers and other block entities",
+                "(chests, furnaces, spawners...). Their contents are lost, nothing drops.",
+                "Turn this off to leave them standing. Default: true")
+            .define("breakContainers", true);
+        AO_CHARGE_MANA_PER_SECOND = b
+            .comment(" Mana the sphere drinks from the caster every second while it is held",
+                "in front of them charging. The cast is cancelled when they run dry.",
+                "Requires Iron's Spells. Default: 20")
+            .defineInRange("chargeManaPerSecond", 20, 1, 2000);
+        b.pop();
+
+        b.push("void_domain");
+        b.comment(" unlimited_void (无量空处) — a closed information domain. Living enemies",
+            "lose AI and players lose movement, interaction and camera control inside.");
+        VOID_MANA_COST = b
+            .comment(" Mana spent when the spell is cast", "Default: 200")
+            .defineInRange("manaCost", 200, 0, 100000);
+        VOID_COOLDOWN_SECONDS = b
+            .comment(" Seconds before the spell can be cast again. Default: 120")
+            .defineInRange("cooldownSeconds", 120, 0, 3600);
+        VOID_DURATION_SECONDS = b
+            .comment(" How long the domain stays open, in seconds. Default: 30")
+            .defineInRange("durationSeconds", 30, 1, 600);
+        VOID_RADIUS = b
+            .comment(" Radius of the domain in blocks. Default: 40")
+            .defineInRange("radius", 40.0D, 4.0D, 128.0D);
+        VOID_DAMAGE = b
+            .comment("Deprecated compatibility value; Unlimited Void no longer deals damage.")
+            .defineInRange("damage", 0.0D, 0.0D, 1000.0D);
+        VOID_DEBUG_FRAMES = b
+            .comment(" Write the domain's intermediate frames to void-dump/ for troubleshooting.",
+                "Costs a full framebuffer readback plus PNG encode twice a second, so leave it",
+                "off unless you are chasing a rendering bug. Default: false")
+            .define("debugFrames", false);
+        b.pop();
+
+        b.push("shingan");
+        b.comment(" shingan (真赝相爱) — the domain expansion. A closed barrier under a",
+            "dusky purple sky, littered with katana, broken white stone crosses and red-white",
+            "knots. While it lasts, it rains random vanilla and Iron's Spells projectiles",
+            "down on every creature inside, undead first.");
+        SHINGAN_MANA_COST = b
+            .comment(" Mana spent when the spell is cast", "Default: 200")
+            .defineInRange("manaCost", 200, 0, 100000);
+        SHINGAN_COOLDOWN_SECONDS = b
+            .comment(" Seconds before the spell can be cast again. Default: 120")
+            .defineInRange("cooldownSeconds", 120, 0, 3600);
+        SHINGAN_DURATION_SECONDS = b
+            .comment(" How long the domain stays open, in seconds. Default: 30")
+            .defineInRange("durationSeconds", 30, 1, 600);
+        SHINGAN_RADIUS = b
+            .comment(" Radius of the domain in blocks. Default: 24")
+            .defineInRange("radius", 24.0D, 4.0D, 128.0D);
+        SHINGAN_ATTACKS = b
+            .comment(" Base number of random Iron's Spells / vanilla projectile attacks.",
+                "One additional attack is added for every living entity inside the domain. Default: 30")
+            .defineInRange("baseAttacks", 30, 1, 300);
+        SHINGAN_ATTACK_INTERVAL_SCALE = b
+            .comment("Multiplier applied to the calculated attack interval. Lower values create a faster barrage.",
+                "Default: 0.35")
+            .defineInRange("attackIntervalScale", 0.35D, 0.10D, 1.0D);
+        SHINGAN_ATTACK_PROJECTILE_SPEED = b
+            .comment("Initial speed of vanilla projectiles fired by the domain. Default: 2.4")
+            .defineInRange("attackProjectileSpeed", 2.4D, 0.2D, 8.0D);
+        SHINGAN_DECOR_COUNT = b
+            .comment(" How many decorations (katana / cross / knot) are scattered in the domain.",
+                "Base count before decorDensity. Default: 200")
+            .defineInRange("decorCount", 200, 0, 600);
+        SHINGAN_DECOR_DENSITY = b
+            .comment("Decoration multiplier, including existing decorCount settings. Default: 1.4 (200 becomes 280).")
+            .defineInRange("decorDensity", 1.4D, 0.0D, 3.0D);
         b.pop();
 
         b.push("he");
@@ -431,6 +537,11 @@ public final class TrueNinsConfig {
             .comment(" Radius of the tunnel it carves while flying (blocks, 1 = a 3x3 tunnel)",
                 "Default: 1")
             .defineInRange("breakRadius", 1, 1, 6);
+        HE_BREAK_CONTAINERS = b
+            .comment(" Whether the sphere also destroys containers and other block entities",
+                "(chests, furnaces, spawners...). Their contents are lost, nothing drops.",
+                "Turn this off to leave them standing. Default: true")
+            .define("breakContainers", true);
         HE_TEAR_LENGTH = b
             .comment(" Half length along the flight axis of the rip left by the final blast",
                 "Default: 8.0")
@@ -443,6 +554,69 @@ public final class TrueNinsConfig {
             .comment(" How far the blast effect visually expands (blocks)",
                 "Default: 6.0")
             .defineInRange("blastRadius", 6.0D, 1.0D, 32.0D);
+        b.pop();
+
+        b.push("purple");
+        b.comment(" purple (茈 / Hollow Purple) — Ao and He converge at a fixed point ahead of the caster,",
+            "then detonate in place with a configurable terrain-clearing sphere.");
+        PURPLE_MANA_COST = b.comment("Mana spent. Default: 250")
+            .defineInRange("manaCost", 250, 0, 100000);
+        PURPLE_COOLDOWN_SECONDS = b.comment("Cooldown in seconds. Default: 90")
+            .defineInRange("cooldownSeconds", 90, 0, 86400);
+        PURPLE_SPAWN_DISTANCE = b.comment("Distance ahead of the caster where the fusion remains. Default: 5")
+            .defineInRange("spawnDistance", 5.0D, 1.0D, 16.0D);
+        PURPLE_FUSION_TICKS = b.comment("Ticks spent drawing Ao and He together before detonation. Default: 30")
+            .defineInRange("fusionTicks", 30, 5, 100);
+        PURPLE_DAMAGE_AMOUNT = b.comment("Magic damage at the blast. Default: 45")
+            .defineInRange("damageAmount", 45.0D, 0.0D, 10000.0D);
+        PURPLE_BLAST_RADIUS = b.comment("Base blast radius, multiplied by blastRadiusScale. Default: 16 (effective 24)")
+            .defineInRange("blastRadius", 16.0D, 1.0D, 64.0D);
+        PURPLE_BLAST_RADIUS_SCALE = b.comment("Blast radius multiplier, also applies to existing configs. Effective radius capped at 64. Default: 1.5")
+            .defineInRange("blastRadiusScale", 1.5D, 0.1D, 4.0D);
+        PURPLE_BREAK_BLOCKS = b.comment("Whether Hollow Purple destroys blocks. Default: true")
+            .define("breakBlocks", true);
+        b.pop();
+
+        b.push("eternal_conflagration");
+        b.comment("Eternal Conflagration: dimension-wide sky, local meteor rain. One active cast per dimension.",
+            "Terrain destruction also respects mobGriefing and Forge explosion protection.");
+        CONFLAGRATION_MANA=b.defineInRange("manaCost",500,0,100000);
+        CONFLAGRATION_COOLDOWN=b.defineInRange("cooldownSeconds",180,0,86400);
+        CONFLAGRATION_RADIUS=b.comment("Spiral radius of the meteor rain, in blocks. Default: 40 [8..64]")
+            .defineInRange("rainRadius",40.0D,8.0D,64.0D);
+        CONFLAGRATION_DAMAGE=b.comment("Magic damage of one small stone at its contact point. Default: 22")
+            .defineInRange("meteorDamage",22.0D,0.0D,10000.0D);
+        CONFLAGRATION_GIANT_DAMAGE=b.comment("Magic damage of the giant stone. Default: 90")
+            .defineInRange("giantDamage",90.0D,0.0D,10000.0D);
+        CONFLAGRATION_GIANT_RADIUS=b.comment("Damage radius of the giant stone, in blocks. Default: 25 [4..32]")
+            .defineInRange("giantBlastRadius",25.0D,4.0D,32.0D);
+        CONFLAGRATION_METEOR_BLAST_SCALE=b.comment(
+                "How much harder a small stone hits the ground when it lands near the rain centre,",
+                "as a multiplier on its vanilla explosion power. 1.0 keeps the old stones everywhere,",
+                "the default gives stones at the centre ~1.6x and falls back to 1.0 at rainRadius.",
+                "Only affects terrain, never damage. Default: 1.6 [1..3]")
+            .defineInRange("meteorBlastScale",1.6D,1.0D,3.0D);
+        CONFLAGRATION_GIANT_CRATER_RADIUS=b.comment(
+                "Radius in blocks of the extra crater blast under the giant impact, on top of the",
+                "normal explosion. This is what digs the pit instead of only scorching the surface.",
+                "0 disables it. Default: 16 [0..48]")
+            .defineInRange("giantCraterRadius",16.0D,0.0D,48.0D);
+        CONFLAGRATION_GIANT_CRATER_DEPTH=b.comment(
+                "How many blocks below the contact point the extra crater blast is centred, i.e. the",
+                "depth it aims for. Default: 5 [0..24]")
+            .defineInRange("giantCraterDepth",5.0D,0.0D,24.0D);
+        CONFLAGRATION_BREAK_BLOCKS=b.comment("Whether the rain and the giant may break blocks. Default: true")
+            .define("breakBlocks",true);
+        b.pop();
+
+        b.push("deadly_sentencing");
+        b.comment("Deadly Sentencing (伏诛赐死) — one visible target; the courtroom is a reversible scene projection.");
+        JUDGMENT_MANA_COST = b.comment("Mana spent. Default: 200")
+            .defineInRange("manaCost", 200, 0, 100000);
+        JUDGMENT_COOLDOWN_SECONDS = b.comment("Cooldown in seconds. Default: 120")
+            .defineInRange("cooldownSeconds", 120, 0, 86400);
+        JUDGMENT_TARGET_RANGE = b.comment("Maximum eye-ray selection range. Default: 24 blocks")
+            .defineInRange("targetRange", 24.0D, 1.0D, 64.0D);
         b.pop();
 
         b.pop();
@@ -675,19 +849,79 @@ public final class TrueNinsConfig {
     }
 
     public static int aoConsumeRadius() {
-        return integer(AO_CONSUME_RADIUS, 6);
+        return integer(AO_CONSUME_RADIUS, 7);
     }
 
     public static int aoConsumeIntervalTicks() {
         return integer(AO_CONSUME_INTERVAL_TICKS, 1);
     }
 
-    public static int aoConsumePerInterval() {
-        return integer(AO_CONSUME_PER_INTERVAL, 48);
+    public static int aoMaxShards() {
+        return integer(AO_MAX_SHARDS, 1000);
     }
 
-    public static int aoMaxShards() {
-        return integer(AO_MAX_SHARDS, 600);
+    public static int voidManaCost() {
+        return integer(VOID_MANA_COST, 200);
+    }
+
+    public static int voidCooldownSeconds() {
+        return integer(VOID_COOLDOWN_SECONDS, 120);
+    }
+
+    public static int voidDurationTicks() {
+        return integer(VOID_DURATION_SECONDS, 30) * 20;
+    }
+
+    public static float voidRadius() {
+        return (float) real(VOID_RADIUS, 40.0D);
+    }
+
+    public static float voidDomainDamage() {
+        return 0.0F;
+    }
+
+    public static boolean voidDebugFrames() {
+        return toggle(VOID_DEBUG_FRAMES, false);
+    }
+
+    public static boolean aoBreakContainers() {
+        return toggle(AO_BREAK_CONTAINERS, true);
+    }
+
+    public static int aoChargeManaPerSecond() {
+        return integer(AO_CHARGE_MANA_PER_SECOND, 20);
+    }
+
+    public static int shinganManaCost() {
+        return integer(SHINGAN_MANA_COST, 200);
+    }
+
+    public static int shinganCooldownSeconds() {
+        return integer(SHINGAN_COOLDOWN_SECONDS, 120);
+    }
+
+    public static int shinganDurationTicks() {
+        return integer(SHINGAN_DURATION_SECONDS, 30) * 20;
+    }
+
+    public static float shinganRadius() {
+        return (float) real(SHINGAN_RADIUS, 24.0D);
+    }
+
+    public static int shinganAttacks() {
+        return integer(SHINGAN_ATTACKS, 30);
+    }
+
+    public static double shinganAttackIntervalScale() {
+        return real(SHINGAN_ATTACK_INTERVAL_SCALE, 0.35D);
+    }
+
+    public static float shinganAttackProjectileSpeed() {
+        return (float) real(SHINGAN_ATTACK_PROJECTILE_SPEED, 2.4D);
+    }
+
+    public static int shinganDecorCount() {
+        return Math.min(600, (int)Math.round(integer(SHINGAN_DECOR_COUNT, 200) * real(SHINGAN_DECOR_DENSITY, 1.4D)));
     }
 
     public static int heManaCost() {
@@ -726,6 +960,10 @@ public final class TrueNinsConfig {
         return toggle(HE_BREAK_BLOCKS, true);
     }
 
+    public static boolean heBreakContainers() {
+        return toggle(HE_BREAK_CONTAINERS, true);
+    }
+
     public static double heTearLength() {
         return real(HE_TEAR_LENGTH, 8.0D);
     }
@@ -738,12 +976,35 @@ public final class TrueNinsConfig {
         return real(HE_BLAST_RADIUS, 6.0D);
     }
 
-    public static int muryokushoTicks() {
-        return secondsToTicks(MURYOKUSHO_DURATION_SECONDS, 1.0D, 1);
+    public static int conflagrationManaCost(){return integer(CONFLAGRATION_MANA,500);}
+    public static int conflagrationCooldownSeconds(){return integer(CONFLAGRATION_COOLDOWN,180);}
+    public static double conflagrationRadius(){return real(CONFLAGRATION_RADIUS,40);}
+    public static float conflagrationDamage(){return (float)real(CONFLAGRATION_DAMAGE,22);}
+    public static float conflagrationGiantDamage(){return (float)real(CONFLAGRATION_GIANT_DAMAGE,90);}
+    public static float conflagrationGiantRadius(){return (float)real(CONFLAGRATION_GIANT_RADIUS,25);}
+    public static boolean conflagrationBreakBlocks(){return toggle(CONFLAGRATION_BREAK_BLOCKS,true);}
+    public static double conflagrationMeteorBlastScale(){return real(CONFLAGRATION_METEOR_BLAST_SCALE,1.6D);}
+    public static double conflagrationGiantCraterRadius(){return real(CONFLAGRATION_GIANT_CRATER_RADIUS,16.0D);}
+    public static double conflagrationGiantCraterDepth(){return real(CONFLAGRATION_GIANT_CRATER_DEPTH,5.0D);}
+
+    public static int purpleManaCost() { return integer(PURPLE_MANA_COST, 250); }
+    public static int purpleCooldownSeconds() { return integer(PURPLE_COOLDOWN_SECONDS, 90); }
+    public static double purpleSpawnDistance() { return real(PURPLE_SPAWN_DISTANCE, 5.0D); }
+    public static int purpleFusionTicks() { return integer(PURPLE_FUSION_TICKS, 30); }
+    public static float purpleDamageAmount() { return (float) real(PURPLE_DAMAGE_AMOUNT, 45.0D); }
+    public static double purpleBlastRadius() { return Math.min(64, real(PURPLE_BLAST_RADIUS, 16.0D) * real(PURPLE_BLAST_RADIUS_SCALE, 1.5D)); }
+    public static boolean purpleBreakBlocks() { return toggle(PURPLE_BREAK_BLOCKS, true); }
+
+    public static int judgmentManaCost() { return integer(JUDGMENT_MANA_COST, 200); }
+    public static int judgmentCooldownSeconds() { return integer(JUDGMENT_COOLDOWN_SECONDS, 120); }
+    public static double judgmentTargetRange() { return real(JUDGMENT_TARGET_RANGE, 24.0D); }
+
+    public static int stunTicks() {
+        return secondsToTicks(STUN_DURATION_SECONDS, 1.0D, 1);
     }
 
-    public static int muryokushoCooldownTicks() {
-        return integer(MURYOKUSHO_COOLDOWN_SECONDS, 10) * 20;
+    public static int stunCooldownTicks() {
+        return integer(STUN_COOLDOWN_SECONDS, 10) * 20;
     }
 
     private static int secondsToTicks(ForgeConfigSpec.DoubleValue value, double fallbackSeconds, int minTicks) {

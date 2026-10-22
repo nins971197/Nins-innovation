@@ -2,7 +2,7 @@ package com.truenins.compat.irons;
 
 import com.truenins.TrueNinsConfig;
 import com.truenins.TrueNinsMod;
-import com.truenins.entity.RedOrbEntity;
+import com.truenins.entity.orb.RedOrbEntity;
 import io.redspace.ironsspellbooks.api.config.DefaultConfig;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;

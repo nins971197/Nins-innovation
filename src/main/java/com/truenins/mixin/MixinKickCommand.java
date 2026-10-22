@@ -1,6 +1,6 @@
 package com.truenins.mixin;
 
-import com.truenins.TagScan;
+import com.truenins.gameplay.tag.TagScan;
 import net.minecraft.server.commands.KickCommand;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;

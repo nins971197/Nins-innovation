@@ -1,5 +1,5 @@
 {
-    "required": true,
+    "required": false,
     "minVersion": "0.8",
     "package": "com.truenins.mixin",
     "compatibilityLevel": "JAVA_17",
@@ -12,11 +12,14 @@
         "MixinEntityTagSync",
         "MixinInventory",
         "MixinKickCommand",
-        "MixinLivingEntity"
+        "MixinLivingEntity",
+        "MixinVoidMobAi",
+        "MixinVoidMovement",
+        "MixinVoidPlayerPackets"
     ],
-    "client": [],
+    "client": ["EffectBlendModeAccessor", "MixinVoidTurn", "MixinConflagrationClouds"],
     "server": [],
     "injectors": {
-        "defaultRequire": 1
+        "defaultRequire": 0
     }
 }

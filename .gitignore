@@ -1,30 +1,41 @@
 # Gradle
 .gradle/
 build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
 
-# Minecraft Forge development runtime
-run/
-
-# IntelliJ IDEA
+# IDE
 .idea/
 *.iml
 *.ipr
 *.iws
-
-# Eclipse
+.vscode/
+.eclipse/
+.settings/
 .classpath
 .project
-.settings/
+bin/
 
-# Third-party dependencies kept locally
+# Minecraft run directory
+run/
+runs/
+
+# Third party mod jars: NOT ours, do not redistribute.
+# Put irons_spellbooks / irons_lib here yourself, see libs/README.md
 libs/*.jar
 
-# Generated archives and reports
+# Logs and crash dumps
 *.log
-crash-reports/
-hs_err_pid*.log
+logs/
+crash-*.txt
 
-# Local environment files
-.env
-.env.*
-!.env.example
+# OS junk
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Tooling caches
+.dsh-code-index/
+
+# Local convenience script (hardcoded JDK path, not for the public repo)
+build.bat

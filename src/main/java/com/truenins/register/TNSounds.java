@@ -28,6 +28,14 @@ public final class TNSounds {
         SOUNDS.register("ao_hum", () -> SoundEvent.createVariableRangeEvent(
             new ResourceLocation(TrueNinsMod.MODID, "ao_hum")));
 
+    public static final RegistryObject<SoundEvent> VOID_AIR_FRICTION =
+        SOUNDS.register("void_air_friction", () -> SoundEvent.createVariableRangeEvent(
+            new ResourceLocation(TrueNinsMod.MODID, "void_air_friction")));
+
+    public static final RegistryObject<SoundEvent> VOID_DONG =
+        SOUNDS.register("void_dong", () -> SoundEvent.createVariableRangeEvent(
+            new ResourceLocation(TrueNinsMod.MODID, "void_dong")));
+
     public static final RegistryObject<SoundEvent> HE_CAST =
         SOUNDS.register("he_cast", () -> SoundEvent.createVariableRangeEvent(
             new ResourceLocation(TrueNinsMod.MODID, "he_cast")));
@@ -43,6 +51,14 @@ public final class TNSounds {
     public static final RegistryObject<SoundEvent> BLOCK_BREAK =
         SOUNDS.register("block_break", () -> SoundEvent.createVariableRangeEvent(
             new ResourceLocation(TrueNinsMod.MODID, "block_break")));
+
+    public static final RegistryObject<SoundEvent> JUDGMENT_GAVEL =
+        SOUNDS.register("judgment_gavel", () -> SoundEvent.createVariableRangeEvent(
+            new ResourceLocation(TrueNinsMod.MODID, "judgment_gavel")));
+
+    public static final RegistryObject<SoundEvent> CONFLAGRATION_BREAKTHROUGH =
+        SOUNDS.register("conflagration_breakthrough", () -> SoundEvent.createFixedRangeEvent(
+            new ResourceLocation(TrueNinsMod.MODID, "conflagration_breakthrough"), 192.0F));
 
     private TNSounds() {}
 }

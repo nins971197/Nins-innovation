@@ -11,13 +11,26 @@ public final class OrbDamage {
         boolean hurt(LivingEntity target, Entity direct, @Nullable LivingEntity owner, float amount, String spellId);
     }
 
+    public interface ManaHook {
+        boolean drain(LivingEntity caster, int amount);
+    }
+
     private static Hook hook;
+    private static ManaHook manaHook;
 
     public static void setHook(Hook value) {
         hook = value;
     }
 
+    public static void setManaHook(ManaHook value) {
+        manaHook = value;
+    }
+
     private OrbDamage() {}
+
+    public static boolean drainMana(LivingEntity caster, int amount) {
+        return manaHook != null && manaHook.drain(caster, amount);
+    }
 
     public static void apply(LivingEntity target, Entity direct, @Nullable LivingEntity owner,
                              float amount, String spellId) {

@@ -1,0 +1,25 @@
+Third-party material provenance — TrueNins 10.0
+
+Reference: Jujutsu Realms / 咒术映界 0.102.5, by VFX Workshop.
+User-supplied archive: jujutsu-vfx-0.102.5-forge-1.20.1..jar
+Its META-INF/mods.toml declares: license="All Rights Reserved".
+
+The following materials were transplanted/adapted from that archive's
+assets/jujutsuvfx/shaders/core directory:
+- limitless_volume.fsh -> assets/truenins/shaders/core/orb_volume.fsh
+- red_technique.fsh -> assets/truenins/shaders/core/orb_red.fsh
+- unlimited_purple_volume.fsh -> assets/truenins/shaders/core/orb_purple.fsh
+- accompanying shader JSON definitions, namespace and blending adapted.
+
+Additional Blue strand adaptation follows the reference limitless_stream material.
+The Shingan scene pass adapts bounded ray/depth rendering to the user's
+sword-grave domain with its own cloud, mist and opening/closing composition.
+
+See the reference audit shipped with the release documentation for adaptation details and verification scope.
+The TrueNins root MIT license does not relicense the above reference materials.
+
+Judgment gavel audio (2.53.0):
+The user-requested single hammer impact at 0.822–1.252 seconds from the
+user-supplied bili_video_d_1792083142296..mp4 reference. Trimmed, filtered,
+converted to mono Vorbis; source film/video audio is not relicensed under MIT.
+The full reference video is not distributed. See art/extract_judgment_gavel.py.

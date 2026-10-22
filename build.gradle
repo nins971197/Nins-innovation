@@ -15,6 +15,11 @@ java {
     withSourcesJar()
 }
 
+// Opt-in local visual harness; never included in a normal release build.
+if (project.hasProperty('visualCheck')) {
+    sourceSets.main.java.srcDir 'src/visualCheck/java'
+}
+
 minecraft {
     mappings channel: 'official', version: "${minecraft_version}"
 
@@ -23,6 +28,12 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'truenins'
+            if (project.hasProperty('visualCheck')) {
+                property 'truenins.visualCheck', 'true'
+                if (project.hasProperty('judgmentCheck')) property 'truenins.judgmentCheck', 'true'
+                if (project.hasProperty('conflagrationCheck')) property 'truenins.conflagrationCheck', 'true'
+                args '--quickPlaySingleplayer', 'VisualCheck'
+            }
             mods {
                 truenins {
                     source sourceSets.main
@@ -53,6 +64,10 @@ repositories {
     maven { url = 'https://maven.aliyun.com/repository/public' }
     maven { url = 'https://maven.minecraftforge.net/' }
     maven { url = 'https://repo.spongepowered.org/maven/' }
+    flatDir { dirs 'libs' }
+    if (project.hasProperty('ironRuntimeDir')) {
+        flatDir { dirs project.property('ironRuntimeDir') }
+    }
 }
 
 dependencies {
@@ -67,10 +82,23 @@ dependencies {
             "other people's work and are deliberately NOT shipped with this repository.\n" +
             "Download them and drop the jars into libs/ - see libs/README.md for details.")
     }
-    compileOnly fg.deobf(files(thirdParty))
+    thirdParty.each { jar ->
+        def parts = (jar.name - '.jar') =~ /^(.+)-(\d[^-]*)$/
+        if (parts.matches()) {
+            compileOnly fg.deobf("libs:${parts[0][1]}:${parts[0][2]}")
+        }
+    }
+    // Optional local integration run. These dependencies are never bundled into the mod or source ZIP.
+    if (project.hasProperty('ironRuntimeDir')) {
+        ['irons_spellbooks-1.20.1:3.16.3', 'irons_lib-1.20.1:2.1.0',
+         'geckolib:4.8.4', 'curios:5.14.1', 'playeranimator:1.0.2'].each { artifact ->
+            runtimeOnly fg.deobf("libs:${artifact}")
+        }
+    }
 }
 
 jar {
+    exclude 'com/truenins/validation/**'
     manifest {
         attributes([
             "Specification-Title"     : "truenins",
@@ -83,6 +111,21 @@ jar {
     }
 }
 
+sourcesJar {
+    exclude 'com/truenins/validation/**'
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.release = 17
+    options.compilerArgs << '-Xlint:deprecation'
 }
+
+tasks.named('jar').configure { finalizedBy('reobfJar') }
+
+tasks.register('orbFlightChecks', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'com.truenins.validation.OrbFlightChecks'
+}
+tasks.named('check').configure { dependsOn 'orbFlightChecks' }

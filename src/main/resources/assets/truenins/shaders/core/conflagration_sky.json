@@ -1,0 +1,71 @@
+{
+  "vertex": "truenins:domain_sky",
+  "fragment": "truenins:conflagration_sky",
+  "attributes": [
+    "Position",
+    "UV0",
+    "Color"
+  ],
+  "samplers": [
+    {
+      "name": "SceneDepth"
+    },
+    {
+      "name": "SceneColor"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "InverseViewProjection",
+      "type": "matrix4x4",
+      "count": 16,
+      "values": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Age",
+      "type": "float",
+      "count": 1,
+      "values": [
+        0
+      ]
+    },
+    {
+      "name": "Visibility",
+      "type": "float",
+      "count": 1,
+      "values": [
+        1
+      ]
+    },
+    {
+      "name": "FeedbackScale",
+      "type": "float",
+      "count": 1,
+      "values": [
+        1
+      ]
+    }
+  ],
+  "blend": {
+    "dstrgb": "1-srcalpha",
+    "func": "add",
+    "srcrgb": "1"
+  }
+}

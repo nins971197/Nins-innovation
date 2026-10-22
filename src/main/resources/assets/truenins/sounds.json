@@ -63,5 +63,33 @@
         "name": "truenins:block_break"
       }
     ]
+  },
+  "void_air_friction": {
+    "sounds": [
+      {
+        "name": "truenins:void_air_friction",
+        "stream": true
+      }
+    ]
+  },
+  "void_dong": {
+    "sounds": [
+      {
+        "name": "truenins:void_dong",
+        "stream": true
+      }
+    ]
+  },
+  "conflagration_breakthrough": {
+    "subtitle": "subtitles.truenins.conflagration_breakthrough",
+    "sounds": [{"name": "truenins:conflagration_breakthrough", "attenuation_distance": 192}]
+  },
+  "judgment_gavel": {
+    "subtitle": "subtitles.truenins.judgment_gavel",
+    "sounds": [
+      {
+        "name": "truenins:judgment_gavel"
+      }
+    ]
   }
 }

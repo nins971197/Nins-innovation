@@ -2,7 +2,7 @@ package com.truenins.compat.irons;
 
 import com.truenins.TrueNinsConfig;
 import com.truenins.TrueNinsMod;
-import com.truenins.entity.BlueOrbEntity;
+import com.truenins.entity.orb.BlueOrbEntity;
 import io.redspace.ironsspellbooks.api.config.DefaultConfig;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class AoSpell extends AbstractSpell {
 
-    public static final int CAST_TICKS = 20;
+    public static final int CAST_TICKS = 40;
 
     private static final AnimationHolder CHARGE = new AnimationHolder(
         new ResourceLocation(TrueNinsMod.MODID, "ao_charge"), false, false);
@@ -104,21 +104,25 @@ public class AoSpell extends AbstractSpell {
     @Override
     public void onServerPreCast(Level level, int spellLevel, LivingEntity entity, MagicData magicData) {
         if (!(level instanceof ServerLevel serverLevel)) return;
-        BlueOrbEntity orb = new BlueOrbEntity(serverLevel, entity, getCastTime(spellLevel));
+        BlueOrbEntity.FAILED_CHARGES.remove(entity.getUUID());
+        boolean costs = magicData.getCastSource() != null && magicData.getCastSource().consumesMana();
+        BlueOrbEntity orb = new BlueOrbEntity(serverLevel, entity, getCastTime(spellLevel), costs);
         serverLevel.addFreshEntity(orb);
-        BlueOrbEntity.CHARGING.put(entity.getUUID(), orb);
+        BlueOrbEntity previous = BlueOrbEntity.CHARGING.put(entity.getUUID(), orb);
+        if (previous != null && !previous.isRemoved()) previous.discard();
     }
 
     @Override
     public void onCast(Level level, int spellLevel, LivingEntity entity, CastSource castSource, MagicData magicData) {
         if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) return;
+        if (BlueOrbEntity.FAILED_CHARGES.remove(entity.getUUID())) return;
         serverLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
             com.truenins.register.TNSounds.AO_CAST.get(),
             net.minecraft.sounds.SoundSource.BLOCKS, 1.5F, 1.0F);
 
         BlueOrbEntity orb = BlueOrbEntity.CHARGING.remove(entity.getUUID());
         if (orb == null || orb.isRemoved()) {
-            orb = new BlueOrbEntity(serverLevel, entity, 1);
+            orb = new BlueOrbEntity(serverLevel, entity, 1, false);
             serverLevel.addFreshEntity(orb);
         }
         orb.launch();
